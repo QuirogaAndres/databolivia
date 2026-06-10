@@ -6,21 +6,21 @@
     <title>DataBolivia | Dashboard Bolivia</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    {{-- Chart.js para el primer gráfico --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         :root {
-            --bg: #f4f7fb;
+            --bg: #f3f6fb;
             --card: #ffffff;
-            --text: #162033;
-            --muted: #667085;
+            --text: #111827;
+            --muted: #6b7280;
             --primary: #2563eb;
             --primary-dark: #1d4ed8;
             --border: #e5e7eb;
             --success: #16a34a;
             --danger: #dc2626;
             --warning: #d97706;
+            --dark: #0f172a;
         }
 
         * {
@@ -35,27 +35,30 @@
         }
 
         .container {
-            width: min(1200px, 92%);
+            width: min(1240px, 92%);
             margin: 0 auto;
         }
 
         .navbar {
-            background: #0f172a;
+            background: var(--dark);
             color: white;
             padding: 18px 0;
+            position: sticky;
+            top: 0;
+            z-index: 20;
         }
 
         .navbar-content {
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
             gap: 16px;
         }
 
         .brand {
             font-size: 22px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
+            font-weight: 900;
+            letter-spacing: -0.6px;
         }
 
         .brand span {
@@ -64,13 +67,14 @@
 
         .nav-links {
             display: flex;
-            gap: 18px;
-            font-size: 14px;
+            gap: 16px;
+            flex-wrap: wrap;
         }
 
         .nav-links a {
             color: #cbd5e1;
             text-decoration: none;
+            font-size: 14px;
         }
 
         .nav-links a:hover {
@@ -78,35 +82,61 @@
         }
 
         .hero {
-            padding: 38px 0 26px;
+            padding: 34px 0 22px;
         }
 
         .hero-card {
-            background: linear-gradient(135deg, #1e3a8a, #2563eb);
-            border-radius: 24px;
-            padding: 34px;
+            background:
+                radial-gradient(circle at top right, rgba(96, 165, 250, 0.45), transparent 30%),
+                linear-gradient(135deg, #172554, #1d4ed8);
             color: white;
-            box-shadow: 0 20px 45px rgba(37, 99, 235, 0.25);
+            border-radius: 28px;
+            padding: 34px;
+            box-shadow: 0 22px 50px rgba(37, 99, 235, 0.25);
         }
 
-        .hero-card h1 {
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.6fr 0.8fr;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .hero h1 {
             margin: 0 0 12px;
             font-size: clamp(30px, 5vw, 48px);
             letter-spacing: -1.5px;
         }
 
-        .hero-card p {
-            max-width: 760px;
+        .hero p {
             margin: 0;
             color: #dbeafe;
-            line-height: 1.6;
-            font-size: 16px;
+            line-height: 1.65;
+            max-width: 760px;
+        }
+
+        .hero-box {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 20px;
+            padding: 18px;
+        }
+
+        .hero-box-label {
+            color: #bfdbfe;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .hero-box-value {
+            font-size: 28px;
+            font-weight: 900;
         }
 
         .hero-meta {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
             margin-top: 22px;
         }
 
@@ -123,8 +153,8 @@
             margin: 34px 0 16px;
             display: flex;
             justify-content: space-between;
-            align-items: end;
-            gap: 14px;
+            align-items: flex-end;
+            gap: 16px;
         }
 
         .section-title h2 {
@@ -148,23 +178,29 @@
         .card {
             background: var(--card);
             border: 1px solid var(--border);
-            border-radius: 18px;
+            border-radius: 20px;
             padding: 20px;
-            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.04);
+            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.045);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
         }
 
         .card-label {
             color: var(--muted);
             font-size: 13px;
             line-height: 1.4;
-            min-height: 36px;
+            min-height: 38px;
         }
 
         .card-value {
             margin-top: 12px;
-            font-size: 25px;
-            font-weight: 800;
-            letter-spacing: -0.7px;
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: -0.8px;
         }
 
         .card-footer {
@@ -174,22 +210,39 @@
             display: flex;
             justify-content: space-between;
             gap: 10px;
+            align-items: center;
         }
 
-        .variation {
-            font-weight: 700;
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border-radius: 999px;
+            padding: 5px 9px;
+            font-size: 12px;
+            font-weight: 800;
         }
 
-        .variation.positive {
-            color: var(--success);
+        .badge.positive {
+            background: #dcfce7;
+            color: #166534;
         }
 
-        .variation.negative {
-            color: var(--danger);
+        .badge.negative {
+            background: #fee2e2;
+            color: #991b1b;
         }
 
-        .variation.neutral {
-            color: var(--muted);
+        .badge.neutral {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 0.9fr 1.5fr;
+            gap: 18px;
+            align-items: start;
         }
 
         .panel {
@@ -197,43 +250,46 @@
             border: 1px solid var(--border);
             border-radius: 22px;
             padding: 22px;
-            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.04);
-            margin-bottom: 24px;
+            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.045);
         }
 
-        .filter-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            align-items: end;
-            margin-bottom: 20px;
+        .filter-form {
+            display: grid;
+            gap: 14px;
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
             gap: 7px;
-            min-width: 260px;
         }
 
         label {
             font-size: 13px;
             color: var(--muted);
-            font-weight: 700;
+            font-weight: 800;
         }
 
         select {
             border: 1px solid var(--border);
             background: white;
-            border-radius: 12px;
+            border-radius: 13px;
             padding: 11px 12px;
             font-size: 14px;
             color: var(--text);
             outline: none;
+            width: 100%;
         }
 
         select:focus {
             border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .year-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
         }
 
         .btn {
@@ -241,25 +297,82 @@
             background: var(--primary);
             color: white;
             padding: 12px 18px;
-            border-radius: 12px;
-            font-weight: 700;
+            border-radius: 13px;
+            font-weight: 900;
             cursor: pointer;
+            width: 100%;
         }
 
         .btn:hover {
             background: var(--primary-dark);
         }
 
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .stat-box {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 14px;
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: -0.4px;
+        }
+
+        .stat-note {
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .selected-indicator-title {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .selected-indicator-title h3 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .selected-indicator-title p {
+            margin: 7px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
         .chart-wrapper {
             position: relative;
-            height: 380px;
+            height: 390px;
+        }
+
+        .table-panel {
+            margin-top: 18px;
         }
 
         .data-table {
             width: 100%;
             border-collapse: collapse;
-            overflow: hidden;
             font-size: 14px;
+            overflow: hidden;
         }
 
         .data-table th {
@@ -268,6 +381,7 @@
             color: #475569;
             padding: 13px;
             border-bottom: 1px solid var(--border);
+            font-size: 13px;
         }
 
         .data-table td {
@@ -279,35 +393,55 @@
             background: #f8fafc;
         }
 
+        .value-strong {
+            font-weight: 800;
+        }
+
         .empty-state {
-            padding: 28px;
+            padding: 30px;
             border: 1px dashed #cbd5e1;
-            border-radius: 16px;
+            border-radius: 18px;
             background: #f8fafc;
             color: var(--muted);
             text-align: center;
         }
 
         .footer {
-            padding: 28px 0 40px;
+            padding: 32px 0 44px;
             color: var(--muted);
             font-size: 13px;
             text-align: center;
         }
 
-        @media (max-width: 1000px) {
+        @media (max-width: 1100px) {
             .cards-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .navbar-content {
-                align-items: flex-start;
-                flex-direction: column;
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
             }
         }
 
         @media (max-width: 640px) {
+            .navbar-content {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
             .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .year-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -316,11 +450,7 @@
             }
 
             .chart-wrapper {
-                height: 300px;
-            }
-
-            .nav-links {
-                flex-wrap: wrap;
+                height: 310px;
             }
         }
     </style>
@@ -345,18 +475,33 @@
         <section class="hero">
             <div class="container">
                 <div class="hero-card">
-                    <h1>Dashboard socioeconómico de {{ $country->name }}</h1>
+                    <div class="hero-grid">
+                        <div>
+                            <h1>Dashboard socioeconómico de {{ $country->name }}</h1>
 
-                    <p>
-                        Visualización inicial de indicadores socioeconómicos obtenidos desde la World Bank API
-                        y almacenados localmente en MySQL para análisis, comparación y futuros reportes.
-                    </p>
+                            <p>
+                                Plataforma inicial de análisis de indicadores socioeconómicos obtenidos desde
+                                la World Bank API y almacenados localmente en MySQL para visualización,
+                                comparación y futuros reportes.
+                            </p>
 
-                    <div class="hero-meta">
-                        <span class="pill">País: {{ $country->name }}</span>
-                        <span class="pill">Región: {{ $country->region }}</span>
-                        <span class="pill">Nivel de ingreso: {{ $country->income_level }}</span>
-                        <span class="pill">Actualizado: {{ now()->format('d/m/Y H:i') }}</span>
+                            <div class="hero-meta">
+                                <span class="pill">País: {{ $country->name }}</span>
+                                <span class="pill">Región: {{ $country->region }}</span>
+                                <span class="pill">Ingreso: {{ $country->income_level }}</span>
+                                <span class="pill">Periodo disponible: {{ $minYear }} -
+                                    {{ $maxYear }}</span>
+                            </div>
+                        </div>
+
+                        <div class="hero-box">
+                            <div class="hero-box-label">Indicadores destacados</div>
+                            <div class="hero-box-value">{{ $featuredIndicators->count() }}</div>
+                            <div class="hero-box-label" style="margin-top: 12px;">
+                                Última actualización visual:
+                                {{ now()->format('d/m/Y H:i') }}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -366,7 +511,7 @@
             <div class="section-title">
                 <div>
                     <h2>Indicadores destacados</h2>
-                    <p>Últimos valores disponibles sincronizados desde la base local.</p>
+                    <p>Últimos valores disponibles de Bolivia según los datos sincronizados.</p>
                 </div>
             </div>
 
@@ -375,15 +520,10 @@
                     @php
                         $latest = $card['latest_value'];
                         $variation = $card['variation'];
-
-                        $variationClass = 'neutral';
-                        $variationText = 'Sin variación';
-
-                        if ($variation !== null) {
-                            $variationClass = $variation >= 0 ? 'positive' : 'negative';
-                            $variationText =
-                                ($variation >= 0 ? '+' : '') . number_format($variation, 2, ',', '.') . '%';
-                        }
+                        $variationText =
+                            $variation === null
+                                ? 'Sin comparación'
+                                : ($variation >= 0 ? '+' : '') . number_format($variation, 2, ',', '.') . '%';
                     @endphp
 
                     <article class="card">
@@ -396,13 +536,10 @@
                         </div>
 
                         <div class="card-footer">
-                            <span>
-                                Año:
-                                {{ $latest?->year ?? 'Sin dato' }}
-                            </span>
+                            <span>Año: {{ $latest?->year ?? 'Sin dato' }}</span>
 
-                            <span class="variation {{ $variationClass }}">
-                                {{ $variationText }}
+                            <span class="badge {{ $card['trend_class'] }}">
+                                {{ $card['trend_label'] }} {{ $variation !== null ? $variationText : '' }}
                             </span>
                         </div>
                     </article>
@@ -413,47 +550,142 @@
         <section class="container">
             <div class="section-title">
                 <div>
-                    <h2>Evolución histórica</h2>
-                    <p>Selecciona un indicador para visualizar su comportamiento por año.</p>
+                    <h2>Análisis histórico</h2>
+                    <p>Filtra un indicador y un rango de años para ver su evolución.</p>
                 </div>
             </div>
 
-            <div class="panel">
-                <form method="GET" action="{{ route('dashboard') }}" class="filter-row">
-                    <div class="form-group">
-                        <label for="indicator">Indicador</label>
-                        <select name="indicator" id="indicator">
-                            @foreach ($featuredIndicators as $indicator)
-                                <option value="{{ $indicator->code }}" @selected($selectedIndicator && $selectedIndicator->code === $indicator->code)>
-                                    {{ $indicator->name }} — {{ $indicator->code }}
-                                </option>
-                            @endforeach
-                        </select>
+            <div class="dashboard-grid">
+                <aside class="panel">
+                    <form method="GET" action="{{ route('dashboard') }}" class="filter-form">
+                        <div class="form-group">
+                            <label for="indicator">Indicador</label>
+                            <select name="indicator" id="indicator">
+                                @foreach ($featuredIndicators as $indicator)
+                                    <option value="{{ $indicator->code }}" @selected($selectedIndicator && $selectedIndicator->code === $indicator->code)>
+                                        {{ $indicator->name }} — {{ $indicator->code }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="year-grid">
+                            <div class="form-group">
+                                <label for="start_year">Año inicial</label>
+                                <select name="start_year" id="start_year">
+                                    @foreach ($availableYears as $year)
+                                        <option value="{{ $year }}" @selected($year == $startYear)>
+                                            {{ $year }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="end_year">Año final</label>
+                                <select name="end_year" id="end_year">
+                                    @foreach ($availableYears as $year)
+                                        <option value="{{ $year }}" @selected($year == $endYear)>
+                                            {{ $year }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn">Actualizar análisis</button>
+                    </form>
+
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-label">Último valor del periodo</div>
+                            <div class="stat-value">{{ $stats['latest_formatted'] }}</div>
+                            <div class="stat-note">
+                                Año: {{ $stats['latest']?->year ?? 'Sin dato' }}
+                            </div>
+                        </div>
+
+                        <div class="stat-box">
+                            <div class="stat-label">Variación reciente</div>
+                            <div class="stat-value">
+                                <span class="badge {{ $stats['variation_class'] }}">
+                                    {{ $stats['variation_text'] }}
+                                </span>
+                            </div>
+                            <div class="stat-note">
+                                Comparado con:
+                                {{ $stats['previous']?->year ?? 'Sin dato anterior' }}
+                            </div>
+                        </div>
+
+                        <div class="stat-box">
+                            <div class="stat-label">Promedio del periodo</div>
+                            <div class="stat-value">{{ $stats['average_formatted'] }}</div>
+                            <div class="stat-note">
+                                Registros: {{ $stats['records_count'] }}
+                            </div>
+                        </div>
+
+                        <div class="stat-box">
+                            <div class="stat-label">Valor máximo</div>
+                            <div class="stat-value">{{ $stats['max_formatted'] }}</div>
+                            <div class="stat-note">
+                                Año: {{ $stats['max']?->year ?? 'Sin dato' }}
+                            </div>
+                        </div>
+
+                        <div class="stat-box">
+                            <div class="stat-label">Valor mínimo</div>
+                            <div class="stat-value">{{ $stats['min_formatted'] }}</div>
+                            <div class="stat-note">
+                                Año: {{ $stats['min']?->year ?? 'Sin dato' }}
+                            </div>
+                        </div>
+
+                        <div class="stat-box">
+                            <div class="stat-label">Unidad</div>
+                            <div class="stat-value">{{ $selectedIndicator?->unit ?? 'Sin unidad' }}</div>
+                            <div class="stat-note">
+                                Código: {{ $selectedIndicator?->code ?? 'N/A' }}
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <section class="panel">
+                    <div class="selected-indicator-title">
+                        <div>
+                            <h3>{{ $selectedIndicator?->name ?? 'Indicador no seleccionado' }}</h3>
+                            <p>
+                                {{ $selectedIndicator?->description ?? 'No hay descripción disponible.' }}
+                            </p>
+                        </div>
+
+                        <span class="badge neutral">
+                            {{ $startYear }} - {{ $endYear }}
+                        </span>
                     </div>
 
-                    <button type="submit" class="btn">Actualizar gráfico</button>
-                </form>
-
-                @if ($selectedIndicator && $chartValues->count() > 0)
-                    <div class="chart-wrapper">
-                        <canvas id="indicatorChart"></canvas>
-                    </div>
-                @else
-                    <div class="empty-state">
-                        No hay datos sincronizados para este indicador.
-                        Ejecuta el comando de sincronización y vuelve a cargar el dashboard.
-                    </div>
-                @endif
+                    @if ($selectedIndicator && $chartValues->count() > 0)
+                        <div class="chart-wrapper">
+                            <canvas id="indicatorChart"></canvas>
+                        </div>
+                    @else
+                        <div class="empty-state">
+                            No hay datos sincronizados para este indicador en el rango seleccionado.
+                        </div>
+                    @endif
+                </section>
             </div>
         </section>
 
-        <section class="container">
+        <section class="container table-panel">
             <div class="section-title">
                 <div>
-                    <h2>Tabla de datos</h2>
+                    <h2>Tabla histórica</h2>
                     <p>
-                        Serie histórica de
-                        <strong>{{ $selectedIndicator?->name ?? 'indicador no seleccionado' }}</strong>.
+                        Serie de datos del indicador seleccionado para el periodo
+                        {{ $startYear }} - {{ $endYear }}.
                     </p>
                 </div>
             </div>
@@ -473,7 +705,9 @@
                             @foreach ($chartValues->sortByDesc('year') as $value)
                                 <tr>
                                     <td>{{ $value->year }}</td>
-                                    <td>{{ number_format((float) $value->value, 6, ',', '.') }}</td>
+                                    <td class="value-strong">
+                                        {{ number_format((float) $value->value, 6, ',', '.') }}
+                                    </td>
                                     <td>{{ $selectedIndicator->unit }}</td>
                                     <td>{{ $selectedIndicator->code }}</td>
                                 </tr>
@@ -491,7 +725,7 @@
 
     <footer class="footer">
         <div class="container">
-            DataBolivia 
+            DataBolivia — Laravel, MySQL, Chart.js y World Bank API.
         </div>
     </footer>
 
@@ -511,7 +745,7 @@
                         data: dataValues,
                         tension: 0.35,
                         pointRadius: 4,
-                        pointHoverRadius: 6,
+                        pointHoverRadius: 7,
                         borderWidth: 3,
                         fill: false
                     }]
@@ -540,6 +774,11 @@
                         }
                     },
                     scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        },
                         y: {
                             beginAtZero: false,
                             ticks: {
