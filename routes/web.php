@@ -6,6 +6,7 @@ use App\Models\IndicatorCategory;
 use App\Services\WorldBankService;
 use App\Models\IndicatorValue;
 use App\Models\SyncLog;
+use App\Http\Controllers\DashboardController;
 
 
 Route::get('/debug/database', function () {
@@ -95,4 +96,11 @@ Route::get('/debug/bolivia-summary', function () {
         'summary' => $values,
     ]);
 });
+
+Route::get('/', function () {
+    return redirect()->route('dashboard');
+});
+
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->name('dashboard');
 
