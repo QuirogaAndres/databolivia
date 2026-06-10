@@ -7,6 +7,7 @@ use App\Services\WorldBankService;
 use App\Models\IndicatorValue;
 use App\Models\SyncLog;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ComparisonController;
 
 
 Route::get('/debug/database', function () {
@@ -104,3 +105,5 @@ Route::get('/', function () {
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
 
+Route::get('/comparador', [ComparisonController::class, 'index'])
+    ->name('comparison');

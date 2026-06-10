@@ -464,6 +464,7 @@
 
             <div class="nav-links">
                 <a href="{{ route('dashboard') }}">Dashboard</a>
+                <a href="{{ route('comparison') }}">Comparador LATAM</a>
                 <a href="/debug/database">Debug BD</a>
                 <a href="/debug/values">Valores</a>
                 <a href="/debug/bolivia-summary">Resumen Bolivia</a>
@@ -725,7 +726,7 @@
 
     <footer class="footer">
         <div class="container">
-            DataBolivia — Laravel, MySQL, Chart.js y World Bank API.
+            DataBolivia
         </div>
     </footer>
 
