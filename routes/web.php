@@ -7,6 +7,7 @@ use App\Services\WorldBankService;
 use App\Models\IndicatorValue;
 use App\Models\SyncLog;
 
+
 Route::get('/debug/database', function () {
     return response()->json([
         'countries' => Country::count(),
